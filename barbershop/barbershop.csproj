@@ -16,7 +16,9 @@
     <Folder Include="Contracts/Requests/" />
     <Folder Include="Controllers/" />
     <Folder Include="Controllers/Responses/" />
+    <Folder Include="Domain/" />
     <Folder Include="Entities/" />
+    <Folder Include="Enum/" />
   </ItemGroup>
 
 </Project>
