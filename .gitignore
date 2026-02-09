@@ -1,0 +1,59 @@
+# Ignore Visual Studio temporary files, build outputs, and user-specific files
+.vs/
+.vscode/
+.idea/
+
+# User-specific files
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+# Build results
+bin/
+obj/
+out/
+TestResults/
+
+# Publish
+publish/
+
+# NuGet
+*.nupkg
+.nuget/
+packages/
+
+# Rider
+/.idea/
+
+# Dotnet
+project.lock.json
+project.fragment.lock.json
+artifacts/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+
+# Runtime files
+*.runtimeconfig.json
+*.deps.json
+
+# Static web assets and generated files
+staticwebassets.build.json
+barbershop.staticwebassets.endpoints.json
+
+# Local app settings (keep production settings in repo if desired)
+appsettings.Development.json
+appsettings.*.Local.json
+
+# env files
+.env
+
+# Backup and temp files
+*~
+# VS Code workspace
+*.code-workspace

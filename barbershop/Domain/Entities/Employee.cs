@@ -1,4 +1,4 @@
-namespace barbershop.Entities;
+namespace barbershop.Domain.Entities;
 
 public class Employee
 {
