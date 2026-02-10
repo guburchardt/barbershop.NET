@@ -22,6 +22,9 @@
     <Folder Include="Domain/" />
     <Folder Include="Entities/" />
     <Folder Include="Enum/" />
+    <Folder Include="Infrastructure/" />
+    <Folder Include="Infrastructure/Persistence/" />
+    <Folder Include="Infrastructure/Persistence/InMemory/" />
   </ItemGroup>
 
 </Project>
