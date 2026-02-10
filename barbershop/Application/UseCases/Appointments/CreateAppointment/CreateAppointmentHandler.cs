@@ -20,7 +20,7 @@ public class CreateAppointmentHandler
         var appointment = new Appointment(cmd.EmployeeId, cmd.ClientId, cmd.StartAt, cmd.EndAt);
 
         // Disponibility rule: conflicts with blocks.
-        var blocked = await _timeBlocks.HasOverlapAsync(cmd.EmployeeId, cmd. StartAt, cmd.EndAt, ct);
+        var blocked = await _timeBlocks.HasOverlapAsync(cmd.EmployeeId, cmd.StartAt, cmd.EndAt, ct);
         if (blocked)
             throw new InvalidOperationException("This time is blocked.");
 
