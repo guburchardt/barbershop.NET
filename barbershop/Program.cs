@@ -2,6 +2,7 @@ using barbershop.Application.Abstractions.Persistence;
 using barbershop.Infrastructure.Persistence.InMemory;
 using barbershop.Application.UseCases.Appointments.CreateAppointment;
 using barbershop.Application.UseCases.Clients.CreateClient;
+using barbershop.Application.UseCases.Clients.ListClients;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -18,6 +19,7 @@ builder.Services.AddSingleton<ITimeBlockRepository, InMemoryTimeBlockRepository>
 builder.Services.AddSingleton<IClientRepository, InMemoryClientRepository>();
 builder.Services.AddScoped<CreateAppointmentHandler>();
 builder.Services.AddScoped<CreateClientHandler>();
+builder.Services.AddScoped<ListClientsHandler>();
 
 
 var app = builder.Build();

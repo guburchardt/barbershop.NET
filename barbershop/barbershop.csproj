@@ -12,10 +12,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Application/UseCases/" />
     <Folder Include="Application/UseCases/Appointments/" />
     <Folder Include="Application/UseCases/Appointments/CreateAppointment/" />
-    <Folder Include="Application/UseCases/Clients/" />
     <Folder Include="Application/UseCases/Clients/CreateClient/" />
     <Folder Include="Contracts/" />
     <Folder Include="Contracts/Requests/" />

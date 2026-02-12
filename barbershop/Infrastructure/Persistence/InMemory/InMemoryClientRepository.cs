@@ -35,4 +35,10 @@ public class InMemoryClientRepository : IClientRepository
         var exists = _clients.Any(c => c.Phone != null && c.Phone == phone);
         return Task.FromResult(exists);
     }
+
+    public Task<IReadOnlyList<Client>> GetAllAsync(CancellationToken ct)
+    {
+        return Task.FromResult((IReadOnlyList<Client>)_clients.ToList());
+    }
+
 }
