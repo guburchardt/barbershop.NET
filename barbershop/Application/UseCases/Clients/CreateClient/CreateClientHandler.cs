@@ -3,7 +3,7 @@ using barbershop.Domain.Entities;
 
 namespace barbershop.Application.UseCases.Clients.CreateClient;
 
-public record class CreateClientHandler
+public record CreateClientHandler
 {
     private readonly IClientRepository _clients;
 
