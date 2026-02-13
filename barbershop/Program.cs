@@ -4,6 +4,7 @@ using barbershop.Application.UseCases.Appointments.CreateAppointment;
 using barbershop.Application.UseCases.Clients.CreateClient;
 using barbershop.Application.UseCases.Clients.ListClients;
 using barbershop.Application.UseCases.Clients.GetClientById;
+using barbershop.Application.UseCases.Clients.UpdateClient;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -22,6 +23,7 @@ builder.Services.AddScoped<CreateAppointmentHandler>();
 builder.Services.AddScoped<CreateClientHandler>();
 builder.Services.AddScoped<ListClientsHandler>();
 builder.Services.AddScoped<GetClientByIdHandler>();
+builder.Services.AddScoped<UpdateClientHandler>();
 
 
 var app = builder.Build();

@@ -45,4 +45,13 @@ public class Client
         UpdatedAt = DateTime.UtcNow;
     }
 
+    public void Rename (string fullName)
+    {
+        if (string.IsNullOrWhiteSpace(fullName))
+            throw new ArgumentException("Client name cannot be empty");
+
+        FullName = fullName;
+        UpdatedAt = DateTime.UtcNow;
+    }
+
 }

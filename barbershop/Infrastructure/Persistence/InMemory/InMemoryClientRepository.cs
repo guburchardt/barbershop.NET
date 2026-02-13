@@ -41,4 +41,10 @@ public class InMemoryClientRepository : IClientRepository
         return Task.FromResult((IReadOnlyList<Client>)_clients.ToList());
     }
 
+    public Task UpdateAsync(Client client, CancellationToken ct)
+    {
+        // In-memory guarda a referência do objeto, então não precisa fazer nada aqui.
+        return Task.CompletedTask;
+    }
+
 }

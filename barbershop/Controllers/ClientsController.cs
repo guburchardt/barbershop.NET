@@ -5,6 +5,7 @@ using barbershop.Contracts.Requests;
 using barbershop.Contracts.Responses;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using barbershop.Application.UseCases.Clients.UpdateClient;
 
 namespace barbershop.Controllers
 {
@@ -15,12 +16,14 @@ namespace barbershop.Controllers
         private readonly CreateClientHandler _create;
         private readonly ListClientsHandler _list;
         private readonly GetClientByIdHandler _getById;
+        private readonly UpdateClientHandler _update;
 
-        public ClientsController(CreateClientHandler create, ListClientsHandler list, GetClientByIdHandler getById)
+        public ClientsController(CreateClientHandler create, ListClientsHandler list, GetClientByIdHandler getById, UpdateClientHandler update)
         {
             _create = create;
             _list = list;
             _getById = getById;
+            _update = update;
         }
 
         [HttpPost]
@@ -54,6 +57,23 @@ namespace barbershop.Controllers
         {
             var client = await _getById.Handle(new GetClientByIdQuery(id), ct);
             if (client is null) return NotFound();
+
+            return Ok(new ClientResponse(client.Id, client.FullName, client.IsActive));
+        }
+
+        [HttpPatch("{id:guid}")]
+        public async Task<IActionResult> Update([FromRoute] Guid id, [FromBody] UpdateClientRequest request, CancellationToken ct)
+        {
+            var cmd = new UpdateClientCommand (
+                id,
+                request.FullName,
+                request.Phone,
+                request.Email
+            );
+
+            var client = await _update.Handle(cmd, ct);
+            if (client is null)
+                return NotFound();
 
             return Ok(new ClientResponse(client.Id, client.FullName, client.IsActive));
         }
