@@ -5,6 +5,7 @@ using barbershop.Contracts.Requests;
 using barbershop.Application.UseCases.Employees.CreateEmployee;
 using barbershop.Domain.Entities;
 using barbershop.Application.UseCases.Employees.ListEmployee;
+using barbershop.Application.UseCases.Employees.GetEmployeeById;
 
 namespace barbershop.Controllers
 {
@@ -14,14 +15,15 @@ namespace barbershop.Controllers
     {
         private readonly CreateEmployeeHandler _create;
         private readonly ListEmployeesHandler _list;
+        private readonly GetEmployeeByIdHandler _getById;
 
-        public EmployeesController(CreateEmployeeHandler create, ListEmployeesHandler list)
+        public EmployeesController(CreateEmployeeHandler create, ListEmployeesHandler list, GetEmployeeByIdHandler getById)
         {
             _create = create;
             _list = list;
+            _getById = getById;
         }
 
-        // GET ALL
         [HttpGet]
         public async Task<IActionResult> GetAll(CancellationToken ct)
         {
@@ -30,13 +32,17 @@ namespace barbershop.Controllers
             return Ok(response);
         }
 
-        // GET BY id
         [HttpGet("{id:guid}")]
-        public IActionResult GetById([FromRoute] Guid id)
+        public async Task<IActionResult> GetById([FromRoute] Guid id, CancellationToken ct)
         {
-            // Fake
-            var employee = new EmployeeResponse(id, "Barbeiro Exemplo", true);
-            return Ok(employee);
+            var employee = await _getById.Handle(new GetEmployeeByIdQuery(id), ct);
+            if (employee is null) return NotFound();
+
+            return Ok(new EmployeeResponse(
+                employee.Id,
+                employee.FullName,
+                employee.IsActive
+            ));
         }
 
         // POST

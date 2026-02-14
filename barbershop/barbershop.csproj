@@ -18,9 +18,7 @@
     <Folder Include="Application/UseCases/Clients/CreateClient/" />
     <Folder Include="Application/UseCases/Clients/DeactivateClient/" />
     <Folder Include="Application/UseCases/Clients/UpdateClient/" />
-    <Folder Include="Application/UseCases/Employees/" />
     <Folder Include="Application/UseCases/Employees/DeactivateEmployee/" />
-    <Folder Include="Application/UseCases/Employees/GetEmployeeById/" />
     <Folder Include="Application/UseCases/Employees/ListEmployee/" />
     <Folder Include="Application/UseCases/Employees/UpdateEmployee/" />
     <Folder Include="Contracts/" />
