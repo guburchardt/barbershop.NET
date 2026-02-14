@@ -2,6 +2,8 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using barbershop.Contracts.Responses;
 using barbershop.Contracts.Requests;
+using barbershop.Application.UseCases.Employees.CreateEmployee;
+using barbershop.Domain.Entities;
 
 namespace barbershop.Controllers
 {
@@ -9,6 +11,13 @@ namespace barbershop.Controllers
     [ApiController]
     public class EmployeesController : ControllerBase
     {
+        private readonly CreateEmployeeHandler _create;
+
+        public EmployeesController(CreateEmployeeHandler create)
+        {
+            _create = create;
+        }
+
         // GET ALL
         [HttpGet]
         public IActionResult GetAll()
@@ -33,20 +42,17 @@ namespace barbershop.Controllers
 
         // POST
         [HttpPost]
-        public IActionResult Create([FromBody] CreateEmployeeRequest request)
+        public async Task<IActionResult> Create([FromBody] CreateEmployeeRequest request, CancellationToken ct)
         {
-            var createdEmployee = new EmployeeResponse(
-                Guid.NewGuid(),
-                request.FullName,
-                true
-            );
+            var command = new CreateEmployeeCommand(request.FullName);
 
-            // Return Created (201) + Location header + body
-            return CreatedAtAction(
-              nameof(GetById),
-              new { id = createdEmployee.Id},
-              createdEmployee  
-            );
+            var employee = await _create.Handle(command, ct);
+
+            return Ok(new EmployeeResponse(
+                employee.Id,
+                employee.FullName,
+                employee.IsActive
+            ));
         }
     }
 }
