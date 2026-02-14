@@ -18,6 +18,12 @@
     <Folder Include="Application/UseCases/Clients/CreateClient/" />
     <Folder Include="Application/UseCases/Clients/DeactivateClient/" />
     <Folder Include="Application/UseCases/Clients/UpdateClient/" />
+    <Folder Include="Application/UseCases/Employee/" />
+    <Folder Include="Application/UseCases/Employee/CreateEmployee/" />
+    <Folder Include="Application/UseCases/Employee/DeactivateEmployee/" />
+    <Folder Include="Application/UseCases/Employee/GetEmployeeById/" />
+    <Folder Include="Application/UseCases/Employee/ListEmployee/" />
+    <Folder Include="Application/UseCases/Employee/UpdateEmployee/" />
     <Folder Include="Contracts/" />
     <Folder Include="Contracts/Requests/" />
     <Folder Include="Controllers/" />

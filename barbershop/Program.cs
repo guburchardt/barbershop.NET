@@ -21,6 +21,7 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddSingleton<IAppointmentRepository, InMemoryAppointmentRepository>();
 builder.Services.AddSingleton<ITimeBlockRepository, InMemoryTimeBlockRepository>();
 builder.Services.AddSingleton<IClientRepository, InMemoryClientRepository>();
+builder.Services.AddSingleton<IEmployeeRepository, InMemoryEmployeeRepository>();
 builder.Services.AddScoped<CreateAppointmentHandler>();
 builder.Services.AddScoped<CreateClientHandler>();
 builder.Services.AddScoped<ListClientsHandler>();
