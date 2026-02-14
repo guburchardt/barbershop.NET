@@ -12,9 +12,12 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Application/UseCases/" />
     <Folder Include="Application/UseCases/Appointments/" />
     <Folder Include="Application/UseCases/Appointments/CreateAppointment/" />
+    <Folder Include="Application/UseCases/Clients/ActivateClient/" />
+    <Folder Include="Application/UseCases/Clients/CreateClient/" />
+    <Folder Include="Application/UseCases/Clients/DeactivateClient/" />
+    <Folder Include="Application/UseCases/Clients/UpdateClient/" />
     <Folder Include="Contracts/" />
     <Folder Include="Contracts/Requests/" />
     <Folder Include="Controllers/" />
