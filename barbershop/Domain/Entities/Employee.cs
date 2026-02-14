@@ -14,7 +14,7 @@ public class Employee
     public Employee(string fullName)
     {
         if (string.IsNullOrWhiteSpace(fullName))
-            throw new ArgumentException("Employee name cannot be empity.");
+            throw new ArgumentException("Employee name cannot be empty.");
         
         Id = Guid.NewGuid();
         FullName = fullName;
@@ -23,14 +23,30 @@ public class Employee
         UpdatedAt = DateTime.UtcNow;
     }
 
+    public void Rename (string fullName)
+    {
+        if (string.IsNullOrWhiteSpace(fullName))
+            throw new ArgumentException("Employee name cannot be empty.");
+
+        if (FullName == fullName)
+            return;
+
+        FullName = fullName;
+        UpdatedAt = DateTime.UtcNow;
+    }
+
     public void Deactivate()
     {
+        if (!IsActive) return;
+
         IsActive = false;
         UpdatedAt = DateTime.UtcNow;
     }
 
     public void Activate()
     {
+        if (IsActive) return;
+
         IsActive = true;
         UpdatedAt = DateTime.UtcNow;
     }
