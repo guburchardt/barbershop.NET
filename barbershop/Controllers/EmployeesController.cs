@@ -4,6 +4,7 @@ using barbershop.Contracts.Responses;
 using barbershop.Contracts.Requests;
 using barbershop.Application.UseCases.Employees.CreateEmployee;
 using barbershop.Domain.Entities;
+using barbershop.Application.UseCases.Employees.ListEmployee;
 
 namespace barbershop.Controllers
 {
@@ -12,23 +13,21 @@ namespace barbershop.Controllers
     public class EmployeesController : ControllerBase
     {
         private readonly CreateEmployeeHandler _create;
+        private readonly ListEmployeesHandler _list;
 
-        public EmployeesController(CreateEmployeeHandler create)
+        public EmployeesController(CreateEmployeeHandler create, ListEmployeesHandler list)
         {
             _create = create;
+            _list = list;
         }
 
         // GET ALL
         [HttpGet]
-        public IActionResult GetAll()
+        public async Task<IActionResult> GetAll(CancellationToken ct)
         {
-            var employees = new List <EmployeeResponse>
-            {
-                new EmployeeResponse(Guid.NewGuid(), "Barbeiro 1", true),
-                new EmployeeResponse(Guid.NewGuid(), "Barbeiro 2", true),
-            };
-
-            return Ok(employees);
+            var employees = await _list.Handle(new ListEmployeesQuery(), ct);
+            var response = employees.Select(e => new EmployeeResponse(e.Id, e.FullName, e.IsActive));
+            return Ok(response);
         }
 
         // GET BY id
