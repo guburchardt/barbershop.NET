@@ -6,6 +6,7 @@ using barbershop.Contracts.Responses;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using barbershop.Application.UseCases.Clients.UpdateClient;
+using barbershop.Application.UseCases.Clients.DeactivateClient;
 
 namespace barbershop.Controllers
 {
@@ -17,13 +18,15 @@ namespace barbershop.Controllers
         private readonly ListClientsHandler _list;
         private readonly GetClientByIdHandler _getById;
         private readonly UpdateClientHandler _update;
+        private readonly DeactivateClientHandler _deactivate;
 
-        public ClientsController(CreateClientHandler create, ListClientsHandler list, GetClientByIdHandler getById, UpdateClientHandler update)
+        public ClientsController(CreateClientHandler create, ListClientsHandler list, GetClientByIdHandler getById, UpdateClientHandler update, DeactivateClientHandler deactivate)
         {
             _create = create;
             _list = list;
             _getById = getById;
             _update = update;
+            _deactivate = deactivate;
         }
 
         [HttpPost]
@@ -72,6 +75,16 @@ namespace barbershop.Controllers
             );
 
             var client = await _update.Handle(cmd, ct);
+            if (client is null)
+                return NotFound();
+
+            return Ok(new ClientResponse(client.Id, client.FullName, client.IsActive));
+        }
+
+        [HttpDelete("{id:guid}")]
+        public async Task<IActionResult> Deactivate([FromRoute] Guid id, CancellationToken ct)
+        {
+            var client = await _deactivate.Handle(new DeactivateClientCommand(id), ct);
             if (client is null)
                 return NotFound();
 

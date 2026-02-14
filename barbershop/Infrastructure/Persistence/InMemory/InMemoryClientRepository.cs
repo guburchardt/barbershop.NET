@@ -31,7 +31,6 @@ public class InMemoryClientRepository : IClientRepository
 
     public Task<bool> ExistsByPhoneAsync(string phone, CancellationToken ct)
     {
-        // Aqui é simples: compara exato. (Depois dá pra normalizar: tirar espaços, DDI, etc.)
         var exists = _clients.Any(c => c.Phone != null && c.Phone == phone);
         return Task.FromResult(exists);
     }
@@ -43,7 +42,6 @@ public class InMemoryClientRepository : IClientRepository
 
     public Task UpdateAsync(Client client, CancellationToken ct)
     {
-        // In-memory guarda a referência do objeto, então não precisa fazer nada aqui.
         return Task.CompletedTask;
     }
 
