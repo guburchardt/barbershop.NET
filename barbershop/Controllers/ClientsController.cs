@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using barbershop.Application.UseCases.Clients.UpdateClient;
 using barbershop.Application.UseCases.Clients.DeactivateClient;
+using barbershop.Application.UseCases.Clients.ActivateClient;
 
 namespace barbershop.Controllers
 {
@@ -19,14 +20,16 @@ namespace barbershop.Controllers
         private readonly GetClientByIdHandler _getById;
         private readonly UpdateClientHandler _update;
         private readonly DeactivateClientHandler _deactivate;
+        private readonly ActivateClientHandler _activate;
 
-        public ClientsController(CreateClientHandler create, ListClientsHandler list, GetClientByIdHandler getById, UpdateClientHandler update, DeactivateClientHandler deactivate)
+        public ClientsController(CreateClientHandler create, ListClientsHandler list, GetClientByIdHandler getById, UpdateClientHandler update, DeactivateClientHandler deactivate, ActivateClientHandler activate)
         {
             _create = create;
             _list = list;
             _getById = getById;
             _update = update;
             _deactivate = deactivate;
+            _activate = activate;
         }
 
         [HttpPost]
@@ -87,6 +90,15 @@ namespace barbershop.Controllers
             var client = await _deactivate.Handle(new DeactivateClientCommand(id), ct);
             if (client is null)
                 return NotFound();
+
+            return Ok(new ClientResponse(client.Id, client.FullName, client.IsActive));
+        }
+
+        [HttpPost("{id:guid}/activate")]
+        public async Task<IActionResult> Activate([FromRoute] Guid id, CancellationToken ct)
+        {
+            var client = await _activate.Handle(new ActivateClientCommand(id), ct);
+            if (client is null) return NotFound();
 
             return Ok(new ClientResponse(client.Id, client.FullName, client.IsActive));
         }
