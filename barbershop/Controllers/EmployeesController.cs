@@ -6,6 +6,7 @@ using barbershop.Application.UseCases.Employees.CreateEmployee;
 using barbershop.Domain.Entities;
 using barbershop.Application.UseCases.Employees.ListEmployee;
 using barbershop.Application.UseCases.Employees.GetEmployeeById;
+using barbershop.Application.UseCases.Employees.UpdateEmployee;
 
 namespace barbershop.Controllers
 {
@@ -16,12 +17,14 @@ namespace barbershop.Controllers
         private readonly CreateEmployeeHandler _create;
         private readonly ListEmployeesHandler _list;
         private readonly GetEmployeeByIdHandler _getById;
+        private readonly UpdateEmployeeHandler _update;
 
-        public EmployeesController(CreateEmployeeHandler create, ListEmployeesHandler list, GetEmployeeByIdHandler getById)
+        public EmployeesController(CreateEmployeeHandler create, ListEmployeesHandler list, GetEmployeeByIdHandler getById, UpdateEmployeeHandler update)
         {
             _create = create;
             _list = list;
             _getById = getById;
+            _update = update;
         }
 
         [HttpGet]
@@ -45,7 +48,6 @@ namespace barbershop.Controllers
             ));
         }
 
-        // POST
         [HttpPost]
         public async Task<IActionResult> Create([FromBody] CreateEmployeeRequest request, CancellationToken ct)
         {
@@ -58,6 +60,15 @@ namespace barbershop.Controllers
                 employee.FullName,
                 employee.IsActive
             ));
+        }
+
+        [HttpPatch("{id:guid}")]
+        public async Task<IActionResult> Update([FromRoute] Guid id, [FromBody] UpdateEmployeeRequest request, CancellationToken ct)
+        {
+            var employee = await _update.Handle(new UpdateEmployeeCommand(id, request.FullName), ct);
+            if (employee is null) return NotFound();
+
+            return Ok(new EmployeeResponse(employee.Id, employee.FullName, employee.IsActive));
         }
     }
 }

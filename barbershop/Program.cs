@@ -10,6 +10,7 @@ using barbershop.Application.UseCases.Clients.ActivateClient;
 using barbershop.Application.UseCases.Employees.CreateEmployee;
 using barbershop.Application.UseCases.Employees.ListEmployee;
 using barbershop.Application.UseCases.Employees.GetEmployeeById;
+using barbershop.Application.UseCases.Employees.UpdateEmployee;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -35,6 +36,7 @@ builder.Services.AddScoped<ActivateClientHandler>();
 builder.Services.AddScoped<CreateEmployeeHandler>();
 builder.Services.AddScoped<ListEmployeesHandler>();
 builder.Services.AddScoped<GetEmployeeByIdHandler>();
+builder.Services.AddScoped<UpdateEmployeeHandler>();
 
 
 var app = builder.Build();
