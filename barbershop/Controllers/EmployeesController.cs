@@ -7,6 +7,8 @@ using barbershop.Domain.Entities;
 using barbershop.Application.UseCases.Employees.ListEmployee;
 using barbershop.Application.UseCases.Employees.GetEmployeeById;
 using barbershop.Application.UseCases.Employees.UpdateEmployee;
+using barbershop.Application.UseCases.Clients.DeactivateClient;
+using barbershop.Application.UseCases.Employees.DeactivateEmployee;
 
 namespace barbershop.Controllers
 {
@@ -18,13 +20,15 @@ namespace barbershop.Controllers
         private readonly ListEmployeesHandler _list;
         private readonly GetEmployeeByIdHandler _getById;
         private readonly UpdateEmployeeHandler _update;
+        private readonly DeactivateEmployeeHandler _deactivate;
 
-        public EmployeesController(CreateEmployeeHandler create, ListEmployeesHandler list, GetEmployeeByIdHandler getById, UpdateEmployeeHandler update)
+        public EmployeesController(CreateEmployeeHandler create, ListEmployeesHandler list, GetEmployeeByIdHandler getById, UpdateEmployeeHandler update, DeactivateEmployeeHandler deactivate)
         {
             _create = create;
             _list = list;
             _getById = getById;
             _update = update;
+            _deactivate = deactivate;
         }
 
         [HttpGet]
@@ -66,6 +70,15 @@ namespace barbershop.Controllers
         public async Task<IActionResult> Update([FromRoute] Guid id, [FromBody] UpdateEmployeeRequest request, CancellationToken ct)
         {
             var employee = await _update.Handle(new UpdateEmployeeCommand(id, request.FullName), ct);
+            if (employee is null) return NotFound();
+
+            return Ok(new EmployeeResponse(employee.Id, employee.FullName, employee.IsActive));
+        }
+
+        [HttpDelete("{id:guid}")]
+        public async Task<IActionResult> Deactivate([FromRoute] Guid id, CancellationToken ct)
+        {
+            var employee = await _deactivate.Handle(new DeactivateEmployeeCommand(id), ct);
             if (employee is null) return NotFound();
 
             return Ok(new EmployeeResponse(employee.Id, employee.FullName, employee.IsActive));
