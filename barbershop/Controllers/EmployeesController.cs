@@ -9,6 +9,7 @@ using barbershop.Application.UseCases.Employees.GetEmployeeById;
 using barbershop.Application.UseCases.Employees.UpdateEmployee;
 using barbershop.Application.UseCases.Clients.DeactivateClient;
 using barbershop.Application.UseCases.Employees.DeactivateEmployee;
+using barbershop.Application.UseCases.Employees.ActivateEmployee;
 
 namespace barbershop.Controllers
 {
@@ -21,14 +22,16 @@ namespace barbershop.Controllers
         private readonly GetEmployeeByIdHandler _getById;
         private readonly UpdateEmployeeHandler _update;
         private readonly DeactivateEmployeeHandler _deactivate;
+        private readonly ActivateEmployeeHandler _activate;
 
-        public EmployeesController(CreateEmployeeHandler create, ListEmployeesHandler list, GetEmployeeByIdHandler getById, UpdateEmployeeHandler update, DeactivateEmployeeHandler deactivate)
+        public EmployeesController(CreateEmployeeHandler create, ListEmployeesHandler list, GetEmployeeByIdHandler getById, UpdateEmployeeHandler update, DeactivateEmployeeHandler deactivate, ActivateEmployeeHandler activate)
         {
             _create = create;
             _list = list;
             _getById = getById;
             _update = update;
             _deactivate = deactivate;
+            _activate = activate;
         }
 
         [HttpGet]
@@ -79,6 +82,15 @@ namespace barbershop.Controllers
         public async Task<IActionResult> Deactivate([FromRoute] Guid id, CancellationToken ct)
         {
             var employee = await _deactivate.Handle(new DeactivateEmployeeCommand(id), ct);
+            if (employee is null) return NotFound();
+
+            return Ok(new EmployeeResponse(employee.Id, employee.FullName, employee.IsActive));
+        }
+
+        [HttpPost("{id:guid}/activate")]
+        public async Task<IActionResult> Activate([FromRoute] Guid id, CancellationToken ct)
+        {
+            var employee = await _activate.Handle(new ActivateEmployeeCommand(id), ct);
             if (employee is null) return NotFound();
 
             return Ok(new EmployeeResponse(employee.Id, employee.FullName, employee.IsActive));
