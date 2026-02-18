@@ -34,7 +34,9 @@ namespace barbershop.Controllers
                 appointment.ClientId,
                 appointment.StartAt,
                 appointment.EndAt,
-                appointment.Status.ToString()
+                appointment.Status.ToString(),
+                appointment.CancelledAt,
+                appointment.CancelReason
             ));
         }
 
@@ -56,7 +58,9 @@ namespace barbershop.Controllers
                 appointment.ClientId,
                 appointment.StartAt,
                 appointment.EndAt,
-                appointment.Status.ToString()
+                appointment.Status.ToString(),
+                appointment.CancelledAt,
+                appointment.CancelReason
             ));
         }
 
@@ -72,7 +76,9 @@ namespace barbershop.Controllers
                 appointment.ClientId,
                 appointment.StartAt,
                 appointment.EndAt,
-                appointment.Status.ToString()
+                appointment.Status.ToString(),
+                appointment.CancelledAt,
+                appointment.CancelReason
             ));
         }
 

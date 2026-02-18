@@ -6,5 +6,7 @@ public record AppointmentResponse(
     Guid ClientId,
     DateTime StartAt,
     DateTime EndAt,
-    string Status
+    string Status,
+    DateTime? CancelledAt,
+    string? CancelReason
 );
