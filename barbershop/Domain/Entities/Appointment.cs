@@ -45,7 +45,7 @@ public class Appointment
     public void Cancel(string? reason = null)
     {
         if (Status == AppointmentStatus.Cancelled)
-            return;
+            throw new InvalidOperationException("Appointment already cancelled.");
 
         Status = AppointmentStatus.Cancelled;
         CancelledAt = DateTime.UtcNow;

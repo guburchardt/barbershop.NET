@@ -24,4 +24,16 @@ public class InMemoryAppointmentRepository : IAppointmentRepository
 
         return Task.FromResult(overlap);
     }
+
+    public Task<Appointment?> GetByIdAsync(Guid id, CancellationToken ct)
+    {
+        var appointment = _appointments.FirstOrDefault(a => a.Id == id);
+        return Task.FromResult(appointment);
+    }
+
+    public Task UpdateAsync(Appointment appointment, CancellationToken ct)
+    {
+        // InMemory: o objeto já está atualizado por referência
+        return Task.CompletedTask;
+    }
 }

@@ -13,6 +13,7 @@
 
   <ItemGroup>
     <Folder Include="Application/UseCases/Appointments/" />
+    <Folder Include="Application/UseCases/Appointments/CancelAppointment/" />
     <Folder Include="Application/UseCases/Appointments/CreateAppointment/" />
     <Folder Include="Application/UseCases/Clients/ActivateClient/" />
     <Folder Include="Application/UseCases/Clients/CreateClient/" />
