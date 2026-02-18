@@ -1,5 +1,6 @@
 using barbershop.Application.UseCases.Appointments.CancelAppointment;
 using barbershop.Application.UseCases.Appointments.CreateAppointment;
+using barbershop.Application.UseCases.Appointments.GetAppointmentById;
 using barbershop.Contracts.Requests;
 using barbershop.Contracts.Responses;
 using Microsoft.AspNetCore.Mvc;
@@ -12,11 +13,29 @@ namespace barbershop.Controllers
     {
         private readonly CreateAppointmentHandler _create;
         private readonly CancelAppointmentHandler _cancel;
+        private readonly GetAppointmentByIdHandler _getById;
 
-        public AppointmentsController(CreateAppointmentHandler create, CancelAppointmentHandler cancel)
+        public AppointmentsController(CreateAppointmentHandler create, CancelAppointmentHandler cancel, GetAppointmentByIdHandler getById)
         {
             _create = create;
             _cancel = cancel;
+            _getById = getById;
+        }
+
+        [HttpGet("{id:guid}")]
+        public async Task <IActionResult> GetById([FromRoute] Guid id, CancellationToken ct)
+        {
+            var appointment = await _getById.Handle(new GetAppointmentByIdQuery(id), ct);
+            if (appointment is null) return NotFound();
+
+            return Ok(new AppointmentResponse(
+                appointment.Id,
+                appointment.EmployeeId,
+                appointment.ClientId,
+                appointment.StartAt,
+                appointment.EndAt,
+                appointment.Status.ToString()
+            ));
         }
 
         [HttpPost]
