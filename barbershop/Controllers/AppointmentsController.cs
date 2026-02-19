@@ -95,7 +95,7 @@ namespace barbershop.Controllers
             ));
         }
 
-        [HttpPost("{id:guid/complete}")]
+        [HttpPost("{id:guid}/complete")]
         public async Task<IActionResult> Complete([FromRoute] Guid id, CancellationToken ct)
         {
             var appointment = await _complete.Handle(new CompleteAppointmentCommand(id), ct);
