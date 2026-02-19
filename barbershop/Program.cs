@@ -17,6 +17,7 @@ using barbershop.Application.UseCases.Appointments.CancelAppointment;
 using barbershop.Application.UseCases.Appointments.GetAppointmentById;
 using barbershop.Application.UseCases.Appointments.ListAppointments;
 using barbershop.Application.UseCases.Appointments.CompleteAppointment;
+using barbershop.Application.UseCases.Availability.GetAvailability;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -49,6 +50,7 @@ builder.Services.AddScoped<CancelAppointmentHandler>();
 builder.Services.AddScoped<GetAppointmentByIdHandler>();
 builder.Services.AddScoped<ListAppointmentsHandler>();
 builder.Services.AddScoped<CompleteAppointmentHandler>();
+builder.Services.AddScoped<GetAvailabilityHandler>();
 
 var app = builder.Build();
 
