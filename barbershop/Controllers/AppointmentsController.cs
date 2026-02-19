@@ -1,6 +1,7 @@
 using barbershop.Application.UseCases.Appointments.CancelAppointment;
 using barbershop.Application.UseCases.Appointments.CreateAppointment;
 using barbershop.Application.UseCases.Appointments.GetAppointmentById;
+using barbershop.Application.UseCases.Appointments.ListAppointments;
 using barbershop.Contracts.Requests;
 using barbershop.Contracts.Responses;
 using Microsoft.AspNetCore.Mvc;
@@ -14,12 +15,35 @@ namespace barbershop.Controllers
         private readonly CreateAppointmentHandler _create;
         private readonly CancelAppointmentHandler _cancel;
         private readonly GetAppointmentByIdHandler _getById;
+        private readonly ListAppointmentsHandler _list;
 
-        public AppointmentsController(CreateAppointmentHandler create, CancelAppointmentHandler cancel, GetAppointmentByIdHandler getById)
+        public AppointmentsController(CreateAppointmentHandler create, CancelAppointmentHandler cancel, GetAppointmentByIdHandler getById, ListAppointmentsHandler list)
         {
             _create = create;
             _cancel = cancel;
             _getById = getById;
+            _list = list;
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> List([FromQuery] Guid? employeeId, [FromQuery] DateTime? date, [FromQuery] string? status, CancellationToken ct)
+        {
+            var day = (date ?? DateTime.UtcNow).Date;
+
+            var appointments = await _list.Handle(new ListAppointmentsQuery(employeeId, day, status), ct);
+
+            var response = appointments.Select(a => new AppointmentResponse(
+                a.Id,
+                a.EmployeeId,
+                a.ClientId,
+                a.StartAt,
+                a.EndAt,
+                a.Status.ToString(),
+                a.CancelledAt,
+                a.CancelReason
+            ));
+
+            return Ok(response);
         }
 
         [HttpGet("{id:guid}")]

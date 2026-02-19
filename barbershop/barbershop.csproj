@@ -16,6 +16,7 @@
     <Folder Include="Application/UseCases/Appointments/CancelAppointment/" />
     <Folder Include="Application/UseCases/Appointments/CreateAppointment/" />
     <Folder Include="Application/UseCases/Appointments/GetAppointmentById/" />
+    <Folder Include="Application/UseCases/Appointments/ListAppointments/" />
     <Folder Include="Application/UseCases/Clients/ActivateClient/" />
     <Folder Include="Application/UseCases/Clients/CreateClient/" />
     <Folder Include="Application/UseCases/Clients/DeactivateClient/" />

@@ -1,5 +1,6 @@
 using barbershop.Application.Abstractions.Persistence;
 using barbershop.Domain.Entities;
+using barbershop.Domain.Enums;
 
 namespace barbershop.Infrastructure.Persistence.InMemory;
 
@@ -35,5 +36,34 @@ public class InMemoryAppointmentRepository : IAppointmentRepository
     {
         // InMemory: o objeto já está atualizado por referência
         return Task.CompletedTask;
+    }
+
+    public Task<IReadOnlyList<Appointment>> ListByDayAsync(Guid? employeeId, DateTime day, string? status, CancellationToken ct)
+    {
+        var start = day.Date;
+        var end = start.AddDays(1);
+
+        var query = _appointments.Where(a =>
+            a.StartAt < end &&
+            a.EndAt > start
+        );
+
+        if (employeeId.HasValue)
+            query = query.Where(a => a.EmployeeId == employeeId.Value);
+
+        if (!string.IsNullOrWhiteSpace(status))
+        {
+            // tenta converter "Booked" / "Cancelled" para enum
+            if (Enum.TryParse<AppointmentStatus>(status, ignoreCase: true, out var parsed))
+                query = query.Where(a => a.Status == parsed);
+            else
+                query = Enumerable.Empty<Appointment>(); // status inválido => retorna vazio (simples por enquanto)
+        }
+
+        var result = query
+            .OrderBy(a => a.StartAt)
+            .ToList();
+
+        return Task.FromResult((IReadOnlyList<Appointment>)result);
     }
 }
