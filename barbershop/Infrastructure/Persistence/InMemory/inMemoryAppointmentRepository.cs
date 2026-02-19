@@ -66,4 +66,21 @@ public class InMemoryAppointmentRepository : IAppointmentRepository
 
         return Task.FromResult((IReadOnlyList<Appointment>)result);
     }
+
+    public Task<IReadOnlyList<Appointment>> ListByEmployeeAndDayAsync(Guid employeeId, DateTime day, CancellationToken ct)
+    {
+        var start = day.Date;
+        var end = start.AddDays(1);
+
+        var result = _appointments
+            .Where(a =>
+                a.EmployeeId == employeeId &&
+                a.StartAt < end &&
+                a.EndAt > start
+            )
+            .OrderBy(a => a.StartAt)
+            .ToList();
+
+        return Task.FromResult((IReadOnlyList<Appointment>)result);
+    }
 }

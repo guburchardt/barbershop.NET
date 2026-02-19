@@ -11,4 +11,5 @@ public interface IAppointmentRepository
     Task <Appointment?> GetByIdAsync(Guid id, CancellationToken ct);
     Task UpdateAsync(Appointment appointment, CancellationToken ct);
     Task <IReadOnlyList<Appointment>> ListByDayAsync(Guid? employeeId, DateTime day, string? status, CancellationToken ct);
+    Task <IReadOnlyList<Appointment>> ListByEmployeeAndDayAsync(Guid employeeId, DateTime day, CancellationToken ct);
 }
