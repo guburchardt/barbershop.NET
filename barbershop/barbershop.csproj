@@ -14,6 +14,7 @@
   <ItemGroup>
     <Folder Include="Application/UseCases/Appointments/" />
     <Folder Include="Application/UseCases/Appointments/CancelAppointment/" />
+    <Folder Include="Application/UseCases/Appointments/CompleteAppointment/" />
     <Folder Include="Application/UseCases/Appointments/CreateAppointment/" />
     <Folder Include="Application/UseCases/Appointments/GetAppointmentById/" />
     <Folder Include="Application/UseCases/Appointments/ListAppointments/" />

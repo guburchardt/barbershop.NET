@@ -42,15 +42,30 @@ public class Appointment
         UpdatedAt = DateTime.UtcNow;
     }
 
-    public void Cancel(string? reason = null)
+    public void Cancel(DateTime nowUtc, string? reason = null)
     {
         if (Status == AppointmentStatus.Cancelled)
             throw new InvalidOperationException("Appointment already cancelled.");
 
+        if (StartAt <= nowUtc)
+            throw new InvalidOperationException("Cannot cancel an appointment that already started.");
+        
+        
         Status = AppointmentStatus.Cancelled;
-        CancelledAt = DateTime.UtcNow;
+        CancelledAt = nowUtc;
         CancelReason = reason;
-        UpdatedAt = DateTime.UtcNow;
+        UpdatedAt = nowUtc;
     }
 
+    public void Complete(DateTime nowUtc)
+    {
+        if (Status == AppointmentStatus.Cancelled)
+            throw new InvalidOperationException("Cannot complete a cancelled appointment.");
+
+        if (Status == AppointmentStatus.Completed)
+            throw new InvalidOperationException("Appointment already completed.");
+
+        Status = AppointmentStatus.Completed;
+        UpdatedAt = nowUtc;
+    }
 }

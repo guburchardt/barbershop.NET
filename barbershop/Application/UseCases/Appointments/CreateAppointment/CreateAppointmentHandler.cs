@@ -20,6 +20,13 @@ public class CreateAppointmentHandler
 
     public async Task<Appointment> Handle(CreateAppointmentCommand cmd, CancellationToken ct)
     {
+        // Appointment in the past
+        if (cmd.StartAt <= DateTime.UtcNow)
+            throw new InvalidOperationException("Cannot book an appointment in the past.");
+
+        if (cmd.EndAt <= DateTime.UtcNow)
+            throw new InvalidOperationException("Cannot book an appointment in the past.");
+
         // Employee exists and is active
         var employee = await _employees.GetByIdAsync(cmd.EmployeeId, ct);
         if (employee is null)
