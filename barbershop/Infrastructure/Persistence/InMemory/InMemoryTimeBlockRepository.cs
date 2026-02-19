@@ -40,4 +40,16 @@ public class InMemoryTimeBlockRepository : ITimeBlockRepository
 
         return Task.FromResult((IReadOnlyList<TimeBlock>)result);
     }
+
+    public Task<TimeBlock?> GetByIdAsync(Guid id, CancellationToken ct)
+    {
+        var block = _blocks.FirstOrDefault(b => b.Id == id);
+        return Task.FromResult(block);
+    }
+
+    public Task RemoveAsync(TimeBlock block, CancellationToken ct)
+    {
+        _blocks.Remove(block);
+        return Task.CompletedTask;
+    }
 }
