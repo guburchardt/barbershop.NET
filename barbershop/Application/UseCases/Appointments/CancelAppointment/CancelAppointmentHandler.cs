@@ -18,7 +18,7 @@ public class CancelAppointmentHandler
         var appointment = await _appointments.GetByIdAsync(cmd.Id, ct);
         if (appointment is null) return null;
 
-        appointment.Cancel(cmd.CancelReason);
+        appointment.Cancel(DateTime.UtcNow, cmd.CancelReason);
 
         await _appointments.UpdateAsync(appointment, ct);
 
