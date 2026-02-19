@@ -18,6 +18,9 @@ using barbershop.Application.UseCases.Appointments.GetAppointmentById;
 using barbershop.Application.UseCases.Appointments.ListAppointments;
 using barbershop.Application.UseCases.Appointments.CompleteAppointment;
 using barbershop.Application.UseCases.Availability.GetAvailability;
+using barbershop.Application.UseCases.TimeBlocks.CreateTimeBlock;
+using barbershop.Application.UseCases.TimeBlocks.ListTimeBlock;
+using barbershop.Application.UseCases.TimeBlocks.DeleteTimeBlock;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -51,6 +54,9 @@ builder.Services.AddScoped<GetAppointmentByIdHandler>();
 builder.Services.AddScoped<ListAppointmentsHandler>();
 builder.Services.AddScoped<CompleteAppointmentHandler>();
 builder.Services.AddScoped<GetAvailabilityHandler>();
+builder.Services.AddScoped<CreateTimeBlockHandler>();
+builder.Services.AddScoped<ListTimeBlocksHandler>();
+builder.Services.AddScoped<DeleteTimeBlockHandler>();
 
 var app = builder.Build();
 

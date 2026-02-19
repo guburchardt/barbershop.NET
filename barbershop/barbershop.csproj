@@ -28,6 +28,9 @@
     <Folder Include="Application/UseCases/Employees/DeactivateEmployee/" />
     <Folder Include="Application/UseCases/Employees/ListEmployee/" />
     <Folder Include="Application/UseCases/Employees/UpdateEmployee/" />
+    <Folder Include="Application/UseCases/TimeBlocks/CreateTimeBlock/" />
+    <Folder Include="Application/UseCases/TimeBlocks/DeleteTimeBlock/" />
+    <Folder Include="Application/UseCases/TimeBlocks/ListTimeBlock/" />
     <Folder Include="Contracts/" />
     <Folder Include="Contracts/Requests/" />
     <Folder Include="Controllers/" />
