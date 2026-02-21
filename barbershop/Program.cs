@@ -21,6 +21,7 @@ using barbershop.Application.UseCases.Availability.GetAvailability;
 using barbershop.Application.UseCases.TimeBlocks.CreateTimeBlock;
 using barbershop.Application.UseCases.TimeBlocks.ListTimeBlock;
 using barbershop.Application.UseCases.TimeBlocks.DeleteTimeBlock;
+using barbershop.Application.UseCases.Services.CreateService;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -36,6 +37,7 @@ builder.Services.AddSingleton<IAppointmentRepository, InMemoryAppointmentReposit
 builder.Services.AddSingleton<ITimeBlockRepository, InMemoryTimeBlockRepository>();
 builder.Services.AddSingleton<IClientRepository, InMemoryClientRepository>();
 builder.Services.AddSingleton<IEmployeeRepository, InMemoryEmployeeRepository>();
+builder.Services.AddSingleton<IServiceRepository, InMemoryServiceRepository>();
 builder.Services.AddScoped<CreateAppointmentHandler>();
 builder.Services.AddScoped<CreateClientHandler>();
 builder.Services.AddScoped<ListClientsHandler>();
@@ -57,6 +59,7 @@ builder.Services.AddScoped<GetAvailabilityHandler>();
 builder.Services.AddScoped<CreateTimeBlockHandler>();
 builder.Services.AddScoped<ListTimeBlocksHandler>();
 builder.Services.AddScoped<DeleteTimeBlockHandler>();
+builder.Services.AddScoped<CreateServiceHandler>();
 
 var app = builder.Build();
 
