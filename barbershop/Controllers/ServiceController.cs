@@ -38,6 +38,62 @@ public class ServiceController : ControllerBase
         _activate = activate;
     }
 
+    [HttpGet]
+    public async Task<IActionResult> List(CancellationToken ct)
+    {
+        var services = await _list.Handle(new ListServicesQuery(), ct);
+        var response = services.Select(s => new ServiceResponse(
+            s.Id,
+            s.Name,
+            s.Description,
+            s.Price,
+            s.DurationInMinutes,
+            s.IsActive
+        ));
+
+        return Ok(response);
+    }
+
+    [HttpGet("{id:guid}")]
+    public async Task<IActionResult> GetById([FromRoute] Guid id, CancellationToken ct)
+    {
+        var service = await _getById.Handle(new GetServiceByIdQuery(id), ct);
+        if (service is null) return NotFound();
+
+        return Ok(new ServiceResponse(
+            service.Id,
+            service.Name,
+            service.Description,
+            service.Price,
+            service.DurationInMinutes,
+            service.IsActive
+        ));
+    }
+
+    [HttpPatch("{id:guid}")]
+    public async Task<IActionResult> Update([FromRoute] Guid id, [FromBody] UpdateServiceRequest request, CancellationToken ct)
+    {
+        var cmd = new UpdateServiceCommand(
+            id,
+            request.Name,
+            request.Description,
+            request.Price,
+            request.DurationInMinutes
+        );
+
+        var service = await _update.Handle(cmd, ct);
+        if (service is null) return NotFound();
+
+        return Ok(new ServiceResponse(
+            service.Id,
+            service.Name,
+            service.Description,
+            service.Price,
+            service.DurationInMinutes,
+            service.IsActive
+        ));
+    }
+
     [HttpPost]
     public async Task<IActionResult> Create([FromBody] CreateServiceRequest request, CancellationToken ct)
     {
@@ -60,5 +116,37 @@ public class ServiceController : ControllerBase
         );
 
         return Ok(response);
+    }
+
+    [HttpPost("{id:guid}/activate")]
+    public async Task<IActionResult> Activate([FromRoute] Guid id, CancellationToken ct)
+    {
+        var service = await _activate.Handle(new ActivateServiceCommand(id), ct);
+        if (service is null) return NotFound();
+
+        return Ok(new ServiceResponse(
+            service.Id,
+            service.Name,
+            service.Description,
+            service.Price,
+            service.DurationInMinutes,
+            service.IsActive
+        ));
+    }
+
+    [HttpDelete("{id:guid}/deactivate")]
+    public async Task<IActionResult> Deactivate([FromRoute] Guid id, CancellationToken ct)
+    {
+        var service = await _deactivate.Handle(new DeactivateServiceCommand(id), ct);
+        if (service is null) return NotFound();
+
+        return Ok(new ServiceResponse(
+            service.Id,
+            service.Name,
+            service.Description,
+            service.Price,
+            service.DurationInMinutes,
+            service.IsActive
+        ));
     }
 }
