@@ -8,6 +8,8 @@ public class Appointment
     public Guid Id { get; private set; }
     public Guid EmployeeId { get; private set; }
     public Guid ClientId { get; private set; }
+    public Guid ServiceId { get; private set; }
+    public decimal Price { get; private set; }
     public DateTime StartAt { get; private set; }
     public DateTime EndAt { get; private set; }
     public AppointmentStatus Status { get; private set; }
@@ -19,7 +21,7 @@ public class Appointment
     // Future ORM
     protected Appointment () {}
 
-    public Appointment (Guid employeeId, Guid clientId, DateTime startAt, DateTime endAt)
+    public Appointment (Guid employeeId, Guid clientId, Guid serviceId, decimal price, DateTime startAt, DateTime endAt)
     {
         if (employeeId == Guid.Empty)
             throw new ArgumentException("EmployeeId is required.");
@@ -27,12 +29,21 @@ public class Appointment
         if (clientId == Guid.Empty)
             throw new ArgumentException("ClientId is required.");
 
+        if (serviceId == Guid.Empty)
+            throw new ArgumentException("ServiceId is required.");
+        
+        if (price < 0)
+            throw new ArgumentException("Price cannot be negative.");
+
         if (endAt <= startAt)
             throw new ArgumentException("EndAt must be grater than StartAt.");
 
         Id = Guid.NewGuid();
         EmployeeId = employeeId;
         ClientId = clientId;
+
+        ServiceId = serviceId;
+        Price = price;
 
         StartAt = startAt;
         EndAt = endAt;

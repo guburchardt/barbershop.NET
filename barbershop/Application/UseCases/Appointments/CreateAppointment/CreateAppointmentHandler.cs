@@ -9,13 +9,15 @@ public class CreateAppointmentHandler
     private readonly ITimeBlockRepository _timeBlocks;
     private readonly IEmployeeRepository _employees;
     private readonly IClientRepository _clients;
+    private readonly IServiceRepository _services;
 
-    public CreateAppointmentHandler(IAppointmentRepository appointments, ITimeBlockRepository timeBlocks, IEmployeeRepository employees, IClientRepository clients)
+    public CreateAppointmentHandler(IAppointmentRepository appointments, ITimeBlockRepository timeBlocks, IEmployeeRepository employees, IClientRepository clients, IServiceRepository services)
     {
         _appointments = appointments;
         _timeBlocks = timeBlocks;
         _employees = employees;
         _clients = clients;
+        _services = services;
     }
 
     public async Task<Appointment> Handle(CreateAppointmentCommand cmd, CancellationToken ct)
@@ -43,6 +45,14 @@ public class CreateAppointmentHandler
         if (!client.IsActive)
             throw new InvalidOperationException("Client is inactive.");
 
+        // Service exists and is active
+        var service = await _services.GetByIdAsync(cmd.ServiceId, ct);
+        if (service is null)
+            throw new InvalidOperationException("Service not found.");
+
+        if (!service.IsActive)
+            throw new InvalidOperationException("Service is inactive.");
+
         // Disponibility rule: conclicts with blocks
         var blocked = await _timeBlocks.HasOverlapAsync(cmd.EmployeeId, cmd.StartAt, cmd.EndAt, ct);
         if (blocked)
@@ -52,7 +62,7 @@ public class CreateAppointmentHandler
         if (overlaps)
             throw new InvalidOperationException("This time is not available for this employee");
 
-        var appointment = new Appointment(cmd.EmployeeId, cmd.ClientId, cmd.StartAt, cmd.EndAt);
+        var appointment = new Appointment(cmd.EmployeeId, cmd.ClientId, cmd.ServiceId, service.Price, cmd.StartAt, cmd.EndAt);
 
         await _appointments.AddAsync(appointment, ct);
 

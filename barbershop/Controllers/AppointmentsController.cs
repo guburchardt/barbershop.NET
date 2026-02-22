@@ -43,6 +43,8 @@ namespace barbershop.Controllers
                 a.Id,
                 a.EmployeeId,
                 a.ClientId,
+                a.ServiceId,
+                a.Price,
                 a.StartAt,
                 a.EndAt,
                 a.Status.ToString(),
@@ -54,7 +56,7 @@ namespace barbershop.Controllers
         }
 
         [HttpGet("{id:guid}")]
-        public async Task <IActionResult> GetById([FromRoute] Guid id, CancellationToken ct)
+        public async Task<IActionResult> GetById([FromRoute] Guid id, CancellationToken ct)
         {
             var appointment = await _getById.Handle(new GetAppointmentByIdQuery(id), ct);
             if (appointment is null) return NotFound();
@@ -63,6 +65,8 @@ namespace barbershop.Controllers
                 appointment.Id,
                 appointment.EmployeeId,
                 appointment.ClientId,
+                appointment.ServiceId,
+                appointment.Price,
                 appointment.StartAt,
                 appointment.EndAt,
                 appointment.Status.ToString(),
@@ -72,11 +76,12 @@ namespace barbershop.Controllers
         }
 
         [HttpPost]
-        public async Task <IActionResult> Create([FromBody] CreateAppointmentRequest request, CancellationToken ct)
+        public async Task<IActionResult> Create([FromBody] CreateAppointmentRequest request, CancellationToken ct)
         {
             var command = new CreateAppointmentCommand(
                 request.EmployeeId,
                 request.ClientId,
+                request.ServiceId,
                 request.StartAt,
                 request.EndAt
             );
@@ -87,6 +92,8 @@ namespace barbershop.Controllers
                 appointment.Id,
                 appointment.EmployeeId,
                 appointment.ClientId,
+                appointment.ServiceId,
+                appointment.Price,
                 appointment.StartAt,
                 appointment.EndAt,
                 appointment.Status.ToString(),
@@ -105,6 +112,8 @@ namespace barbershop.Controllers
                 appointment.Id,
                 appointment.EmployeeId,
                 appointment.ClientId,
+                appointment.ServiceId,
+                appointment.Price,
                 appointment.StartAt,
                 appointment.EndAt,
                 appointment.Status.ToString(),
@@ -114,7 +123,7 @@ namespace barbershop.Controllers
         }
 
         [HttpPost("{id:guid}/cancel")]
-        public async Task <IActionResult> Cancel([FromRoute] Guid id, [FromBody] CancelAppointmentRequest request, CancellationToken ct)
+        public async Task<IActionResult> Cancel([FromRoute] Guid id, [FromBody] CancelAppointmentRequest request, CancellationToken ct)
         {
             var appointment = await _cancel.Handle(new CancelAppointmentCommand(id, request.CancelReason), ct);
             if (appointment is null) return NotFound();
@@ -123,6 +132,8 @@ namespace barbershop.Controllers
                 appointment.Id,
                 appointment.EmployeeId,
                 appointment.ClientId,
+                appointment.ServiceId,
+                appointment.Price,
                 appointment.StartAt,
                 appointment.EndAt,
                 appointment.Status.ToString(),
