@@ -25,7 +25,9 @@ using barbershop.Application.UseCases.Services.ListService;
 using barbershop.Application.UseCases.Services.UpdateService;
 using barbershop.Application.UseCases.TimeBlocks.CreateTimeBlock;
 using barbershop.Application.UseCases.TimeBlocks.DeleteTimeBlock;
+using barbershop.Application.UseCases.TimeBlocks.GetTimeBlockById;
 using barbershop.Application.UseCases.TimeBlocks.ListTimeBlock;
+using barbershop.Application.UseCases.TimeBlocks.UpdateTimeBlock;
 using barbershop.Infrastructure.Persistence.InMemory;
 
 
@@ -70,6 +72,8 @@ builder.Services.AddScoped<GetServiceByIdHandler>();
 builder.Services.AddScoped<UpdateServiceHandler>();
 builder.Services.AddScoped<DeactivateServiceHandler>();
 builder.Services.AddScoped<ActivateServiceHandler>();
+builder.Services.AddScoped<GetTimeBlockByIdHandler>();
+builder.Services.AddScoped<UpdateTimeBlockHandler>();
 
 var app = builder.Build();
 

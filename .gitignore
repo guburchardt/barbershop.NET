@@ -57,3 +57,5 @@ appsettings.*.Local.json
 *~
 # VS Code workspace
 *.code-workspace
+
+.agents/
